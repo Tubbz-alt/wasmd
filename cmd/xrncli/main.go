@@ -47,7 +47,7 @@ func main() {
 	// with the cdc
 
 	rootCmd := &cobra.Command{
-		Use:   "wasmcli",
+		Use:   "xrncli",
 		Short: "Command line interface for interacting with wasmd",
 	}
 

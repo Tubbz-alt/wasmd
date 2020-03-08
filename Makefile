@@ -69,11 +69,11 @@ all: install lint test
 
 build: go.sum
 ifeq ($(OS),Windows_NT)
-	go build -mod=readonly $(BUILD_FLAGS) -o build/wasmd.exe ./cmd/wasmd
-	go build -mod=readonly $(BUILD_FLAGS) -o build/wasmcli.exe ./cmd/wasmcli
+	go build -mod=readonly $(BUILD_FLAGS) -o build/xrnd.exe ./cmd/xrnd
+	go build -mod=readonly $(BUILD_FLAGS) -o build/xrncli.exe ./cmd/xrncli
 else
-	go build -mod=readonly $(BUILD_FLAGS) -o build/wasmd ./cmd/wasmd
-	go build -mod=readonly $(BUILD_FLAGS) -o build/wasmcli ./cmd/wasmcli
+	go build -mod=readonly $(BUILD_FLAGS) -o build/xrnd ./cmd/xrnd
+	go build -mod=readonly $(BUILD_FLAGS) -o build/xrncli ./cmd/xrncli
 endif
 
 build-linux: go.sum
