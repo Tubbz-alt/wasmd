@@ -48,8 +48,8 @@ build_tags_comma_sep := $(subst $(whitespace),$(comma),$(build_tags))
 # process linker flags
 
 ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=wasm \
-		  -X github.com/cosmos/cosmos-sdk/version.ServerName=wasmd \
-		  -X github.com/cosmos/cosmos-sdk/version.ClientName=wasmcli \
+		  -X github.com/cosmos/cosmos-sdk/version.ServerName=xrnd \
+		  -X github.com/cosmos/cosmos-sdk/version.ClientName=xrncli \
 		  -X github.com/cosmos/cosmos-sdk/version.Version=$(VERSION) \
 		  -X github.com/cosmos/cosmos-sdk/version.Commit=$(COMMIT) \
 		  -X "github.com/cosmos/cosmos-sdk/version.BuildTags=$(build_tags_comma_sep)"
@@ -87,8 +87,8 @@ else
 endif
 
 install: go.sum
-	go install -mod=readonly $(BUILD_FLAGS) ./cmd/wasmd
-	go install -mod=readonly $(BUILD_FLAGS) ./cmd/wasmcli
+	go install -mod=readonly $(BUILD_FLAGS) ./cmd/xrnd
+	go install -mod=readonly $(BUILD_FLAGS) ./cmd/xrncli
 
 
 ########################################
@@ -125,7 +125,7 @@ go.sum: go.mod
 draw-deps:
 	@# requires brew install graphviz or apt-get install graphviz
 	go get github.com/RobotsAndPencils/goviz
-	@goviz -i ./cmd/wasmd -d 2 | dot -Tpng -o dependency-graph.png
+	@goviz -i ./cmd/xrnd -d 2 | dot -Tpng -o dependency-graph.png
 
 clean:
 	rm -rf snapcraft-local.yaml build/
@@ -175,7 +175,7 @@ build-docker-wasmdnode:
 
 # Run a 4-node testnet locally
 localnet-start: build-linux localnet-stop
-	@if ! [ -f build/node0/wasmd/config/genesis.json ]; then docker run --rm -v $(CURDIR)/build:/wasmd:Z tendermint/wasmdnode testnet --v 4 -o . --starting-ip-address 192.168.10.2 ; fi
+	@if ! [ -f build/node0/xrnd/config/genesis.json ]; then docker run --rm -v $(CURDIR)/build:/xrnd:Z tendermint/xrndnode testnet --v 4 -o . --starting-ip-address 192.168.10.2 ; fi
 	docker-compose up -d
 
 # Stop testnet
@@ -187,11 +187,11 @@ setup-contract-tests-data:
 	rm -rf /tmp/contract_tests ; \
 	mkdir /tmp/contract_tests ; \
 	cp "${GOPATH}/pkg/mod/${SDK_PACK}/client/lcd/swagger-ui/swagger.yaml" /tmp/contract_tests/swagger.yaml ; \
-	./build/wasmd init --home /tmp/contract_tests/.wasmd --chain-id lcd contract-tests ; \
+	./build/xrnd init --home /tmp/contract_tests/.xrnd --chain-id lcd contract-tests ; \
 	tar -xzf lcd_test/testdata/state.tar.gz -C /tmp/contract_tests/
 
 start-gaia: setup-contract-tests-data
-	./build/wasmd --home /tmp/contract_tests/.wasmd start &
+	./build/xrnd --home /tmp/contract_tests/.xrnd start &
 	@sleep 2s
 
 setup-transactions: start-gaia
@@ -199,11 +199,11 @@ setup-transactions: start-gaia
 
 run-lcd-contract-tests:
 	@echo "Running Gaia LCD for contract tests"
-	./build/wasmcli rest-server --laddr tcp://0.0.0.0:8080 --home /tmp/contract_tests/.wasmcli --node http://localhost:26657 --chain-id lcd --trust-node true
+	./build/xrncli rest-server --laddr tcp://0.0.0.0:8080 --home /tmp/contract_tests/.xrncli --node http://localhost:26657 --chain-id lcd --trust-node true
 
 contract-tests: setup-transactions
 	@echo "Running Gaia LCD for contract tests"
-	dredd && pkill wasmd
+	dredd && pkill xrnd
 
 # include simulations
 include sims.mk
