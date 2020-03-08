@@ -43,10 +43,10 @@ const appName = "WasmApp"
 
 var (
 	// DefaultCLIHome default home directories for wasmcli
-	DefaultCLIHome = os.ExpandEnv("$HOME/.wasmcli")
+	DefaultCLIHome = os.ExpandEnv("$HOME/.xrncli")
 
 	// DefaultNodeHome default home directories for wasmd
-	DefaultNodeHome = os.ExpandEnv("$HOME/.wasmd")
+	DefaultNodeHome = os.ExpandEnv("$HOME/.xrnd")
 
 	// ModuleBasics The module BasicManager is in charge of setting up basic,
 	// non-dependant module elements, such as codec registration
