@@ -213,7 +213,10 @@ func NewWasmApp(
 
 	// this configures a no-op upgrade handler for the "himalaya" upgrade
 	app.upgradeKeeper.SetUpgradeHandler("himalaya", func(ctx sdk.Context, plan upgrade.Plan) {
+		slashingParams := app.slashingKeeper.GetParams(ctx)
+		slashingParams.SignedBlocksWindow = int64(1000)
 
+		app.slashingKeeper.SetParams(ctx, slashingParams)
 	})
 
 	// just re-use the full router - do we want to limit this more?
