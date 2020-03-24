@@ -211,6 +211,11 @@ func NewWasmApp(
 	)
 	app.upgradeKeeper = upgrade.NewKeeper(skipUpgradeHeights, keys[upgrade.StoreKey], app.cdc)
 
+	// this configures a no-op upgrade handler for the "himalaya" upgrade
+	app.upgradeKeeper.SetUpgradeHandler("himalaya", func(ctx sdk.Context, plan upgrade.Plan) {
+
+	})
+
 	// just re-use the full router - do we want to limit this more?
 	var wasmRouter = bApp.Router()
 	// better way to get this dir???
