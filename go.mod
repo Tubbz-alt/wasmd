@@ -5,7 +5,9 @@ go 1.13
 require (
 	github.com/btcsuite/btcd v0.0.0-20190807005414-4063feeff79a // indirect
 	github.com/confio/go-cosmwasm v0.7.2
-	github.com/cosmos/cosmos-sdk v0.38.1
+	github.com/coreos/go-etcd v2.0.0+incompatible // indirect
+	github.com/cosmos/cosmos-sdk v0.38.2
+	github.com/cpuguy83/go-md2man v1.0.10 // indirect
 	github.com/golang/mock v1.3.1 // indirect
 	github.com/gorilla/mux v1.7.3
 	github.com/onsi/ginkgo v1.8.0 // indirect
@@ -22,11 +24,9 @@ require (
 	github.com/stretchr/testify v1.5.1
 	github.com/tendermint/go-amino v0.15.1
 	github.com/tendermint/tendermint v0.33.3
-	github.com/tendermint/tm-db v0.4.1
+	github.com/tendermint/tm-db v0.5.0
+	github.com/ugorji/go/codec v0.0.0-20181204163529-d75b2dcb6bc8 // indirect
 	golang.org/x/net v0.0.0-20190827160401-ba9fcec4b297 // indirect
 )
 
 replace github.com/keybase/go-keychain => github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4
-
-// this include a few extra debug helpers on top of cosmos v0.38.1 but original also works fine
-replace github.com/cosmos/cosmos-sdk => github.com/confio/cosmos-sdk v0.38.6
