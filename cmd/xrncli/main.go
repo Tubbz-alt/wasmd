@@ -25,7 +25,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/bank"
 	bankcmd "github.com/cosmos/cosmos-sdk/x/bank/client/cli"
 
-	"github.com/cosmos/gaia/app"
+	"github.com/regen-network/wasmd/app"
 )
 
 var (
@@ -53,8 +53,8 @@ func main() {
 	// with the cdc
 
 	rootCmd := &cobra.Command{
-		Use:   "gaiacli",
-		Short: "Command line interface for interacting with gaiad",
+		Use:   "xrncli",
+		Short: "Command line interface for interacting with xrnd",
 	}
 
 	// Add --chain-id to persistent flags and mark it required

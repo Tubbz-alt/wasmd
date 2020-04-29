@@ -23,7 +23,7 @@ import (
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	"github.com/cosmos/cosmos-sdk/x/staking"
 
-	"github.com/cosmos/gaia/app"
+	"github.com/regen-network/wasmd/app"
 )
 
 const flagInvCheckPeriod = "inv-check-period"
@@ -43,8 +43,8 @@ func main() {
 	ctx := server.NewDefaultContext()
 	cobra.EnableCommandSorting = false
 	rootCmd := &cobra.Command{
-		Use:               "gaiad",
-		Short:             "Gaia Daemon (server)",
+		Use:               "xrnd",
+		Short:             "Regen Daemon (server)",
 		PersistentPreRunE: server.PersistentPreRunEFn(ctx),
 	}
 
@@ -88,7 +88,7 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer) abci.Application
 		skipUpgradeHeights[int64(h)] = true
 	}
 
-	return app.NewGaiaApp(
+	return app.NewRegenApp(
 		logger, db, traceStore, true, invCheckPeriod, skipUpgradeHeights,
 		viper.GetString(flags.FlagHome),
 		baseapp.SetPruning(store.NewPruningOptionsFromString(viper.GetString("pruning"))),
@@ -104,7 +104,7 @@ func exportAppStateAndTMValidators(
 ) (json.RawMessage, []tmtypes.GenesisValidator, *abci.ConsensusParams, error) {
 
 	if height != -1 {
-		gapp := app.NewGaiaApp(logger, db, traceStore, false, uint(1), map[int64]bool{}, "")
+		gapp := app.NewRegenApp(logger, db, traceStore, false, uint(1), map[int64]bool{}, "")
 		err := gapp.LoadHeight(height)
 		if err != nil {
 			return nil, nil, nil, err
@@ -113,6 +113,6 @@ func exportAppStateAndTMValidators(
 		return gapp.ExportAppStateAndValidators(forZeroHeight, jailWhiteList)
 	}
 
-	gapp := app.NewGaiaApp(logger, db, traceStore, true, uint(1), map[int64]bool{}, "")
+	gapp := app.NewRegenApp(logger, db, traceStore, true, uint(1), map[int64]bool{}, "")
 	return gapp.ExportAppStateAndValidators(forZeroHeight, jailWhiteList)
 }

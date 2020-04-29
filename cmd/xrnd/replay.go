@@ -17,7 +17,7 @@ import (
 	tmstore "github.com/tendermint/tendermint/store"
 	tm "github.com/tendermint/tendermint/types"
 
-	"github.com/cosmos/gaia/app"
+	"github.com/regen-network/wasmd/app"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/server"
@@ -28,7 +28,7 @@ import (
 func replayCmd() *cobra.Command {
 	return &cobra.Command{
 		Use:   "replay <root-dir>",
-		Short: "Replay gaia transactions",
+		Short: "Replay xrn transactions",
 		RunE: func(_ *cobra.Command, args []string) error {
 			return replayTxs(args[0])
 		},
@@ -94,7 +94,7 @@ func replayTxs(rootDir string) error {
 
 	// Application
 	fmt.Fprintln(os.Stderr, "Creating application")
-	gapp := app.NewGaiaApp(
+	gapp := app.NewRegenApp(
 		ctx.Logger, appDB, traceStoreWriter, true, uint(1), map[int64]bool{}, "",
 		baseapp.SetPruning(store.PruneEverything), // nothing
 	)

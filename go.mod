@@ -1,11 +1,9 @@
-module github.com/cosmos/gaia
+module github.com/regen-network/wasmd
 
 go 1.14
 
 require (
 	github.com/cosmos/cosmos-sdk v0.34.4-0.20200423152229-f1fdde5d1b18
-	github.com/onsi/ginkgo v1.8.0 // indirect
-	github.com/onsi/gomega v1.5.0 // indirect
 	github.com/otiai10/copy v1.1.1
 	github.com/pkg/errors v0.9.1
 	github.com/snikch/goodman v0.0.0-20171125024755-10e37e294daa
