@@ -16,7 +16,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/client/lcd"
 	"github.com/cosmos/cosmos-sdk/client/rpc"
 	codecstd "github.com/cosmos/cosmos-sdk/codec/std"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/version"
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	authclient "github.com/cosmos/cosmos-sdk/x/auth/client"
@@ -26,6 +25,7 @@ import (
 	bankcmd "github.com/cosmos/cosmos-sdk/x/bank/client/cli"
 
 	"github.com/regen-network/wasmd/app"
+	"github.com/regen-network/wasmd/cmd/common"
 )
 
 var (
@@ -41,12 +41,8 @@ func main() {
 	// Configure cobra to sort commands
 	cobra.EnableCommandSorting = false
 
-	// Read in the configuration file for the sdk
-	config := sdk.GetConfig()
-	config.SetBech32PrefixForAccount(sdk.Bech32PrefixAccAddr, sdk.Bech32PrefixAccPub)
-	config.SetBech32PrefixForValidator(sdk.Bech32PrefixValAddr, sdk.Bech32PrefixValPub)
-	config.SetBech32PrefixForConsensusNode(sdk.Bech32PrefixConsAddr, sdk.Bech32PrefixConsPub)
-	config.Seal()
+	// Set account prefixes
+	common.SetSDKAccountPrefixes()
 
 	// TODO: setup keybase, viper object, etc. to be passed into
 	// the below functions and eliminate global vars, like we do

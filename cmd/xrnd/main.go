@@ -24,6 +24,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/staking"
 
 	"github.com/regen-network/wasmd/app"
+	"github.com/regen-network/wasmd/cmd/common"
 )
 
 const flagInvCheckPeriod = "inv-check-period"
@@ -34,11 +35,8 @@ func main() {
 	cdc := codecstd.MakeCodec(app.ModuleBasics)
 	appCodec := codecstd.NewAppCodec(cdc)
 
-	config := sdk.GetConfig()
-	config.SetBech32PrefixForAccount(sdk.Bech32PrefixAccAddr, sdk.Bech32PrefixAccPub)
-	config.SetBech32PrefixForValidator(sdk.Bech32PrefixValAddr, sdk.Bech32PrefixValPub)
-	config.SetBech32PrefixForConsensusNode(sdk.Bech32PrefixConsAddr, sdk.Bech32PrefixConsPub)
-	config.Seal()
+	// Set account prefixes
+	common.SetSDKAccountPrefixes()
 
 	ctx := server.NewDefaultContext()
 	cobra.EnableCommandSorting = false
