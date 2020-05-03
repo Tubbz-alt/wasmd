@@ -1,4 +1,4 @@
-module github.com/cosmos/gaia
+module github.com/regen-network/wasmd
 
 go 1.14
 

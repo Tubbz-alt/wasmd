@@ -39,14 +39,14 @@ import (
 	upgradeclient "github.com/cosmos/cosmos-sdk/x/upgrade/client"
 )
 
-const appName = "GaiaApp"
+const appName = "RegenApp"
 
 var (
-	// DefaultCLIHome default home directories for gaiacli
-	DefaultCLIHome = os.ExpandEnv("$HOME/.gaiacli")
+	// DefaultCLIHome default home directories for xrncli
+	DefaultCLIHome = os.ExpandEnv("$HOME/.xrncli")
 
-	// DefaultNodeHome default home directories for gaiad
-	DefaultNodeHome = os.ExpandEnv("$HOME/.gaiad")
+	// DefaultNodeHome default home directories for xrnd
+	DefaultNodeHome = os.ExpandEnv("$HOME/.xrnd")
 
 	// ModuleBasics defines the module BasicManager is in charge of setting up basic,
 	// non-dependant module elements, such as codec registration
@@ -89,10 +89,10 @@ var (
 )
 
 // Verify app interface at compile time
-var _ simapp.App = (*GaiaApp)(nil)
+var _ simapp.App = (*RegenApp)(nil)
 
-// GaiaApp extended ABCI application
-type GaiaApp struct {
+// RegenApp extended ABCI application
+type RegenApp struct {
 	*baseapp.BaseApp
 	cdc *codec.Codec
 
@@ -133,12 +133,12 @@ type GaiaApp struct {
 	sm *module.SimulationManager
 }
 
-// NewGaiaApp returns a reference to an initialized GaiaApp.
-func NewGaiaApp(
+// NewRegenApp returns a reference to an initialized RegenApp.
+func NewRegenApp(
 	logger log.Logger, db dbm.DB, traceStore io.Writer, loadLatest bool,
 	invCheckPeriod uint, skipUpgradeHeights map[int64]bool, home string,
 	baseAppOptions ...func(*baseapp.BaseApp),
-) *GaiaApp {
+) *RegenApp {
 
 	// TODO: Remove cdc in favor of appCodec once all modules are migrated.
 	cdc := std.MakeCodec(ModuleBasics)
@@ -157,7 +157,7 @@ func NewGaiaApp(
 	tkeys := sdk.NewTransientStoreKeys(params.TStoreKey)
 	memKeys := sdk.NewMemoryStoreKeys(capability.MemStoreKey)
 
-	app := &GaiaApp{
+	app := &RegenApp{
 		BaseApp:        bApp,
 		cdc:            cdc,
 		invCheckPeriod: invCheckPeriod,
@@ -357,32 +357,32 @@ func NewGaiaApp(
 }
 
 // Name returns the name of the App
-func (app *GaiaApp) Name() string { return app.BaseApp.Name() }
+func (app *RegenApp) Name() string { return app.BaseApp.Name() }
 
 // BeginBlocker application updates every begin block
-func (app *GaiaApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
+func (app *RegenApp) BeginBlocker(ctx sdk.Context, req abci.RequestBeginBlock) abci.ResponseBeginBlock {
 	return app.mm.BeginBlock(ctx, req)
 }
 
 // EndBlocker application updates every end block
-func (app *GaiaApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
+func (app *RegenApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.ResponseEndBlock {
 	return app.mm.EndBlock(ctx, req)
 }
 
 // InitChainer application update at chain initialization
-func (app *GaiaApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
+func (app *RegenApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 	var genesisState simapp.GenesisState
 	app.cdc.MustUnmarshalJSON(req.AppStateBytes, &genesisState)
 	return app.mm.InitGenesis(ctx, app.cdc, genesisState)
 }
 
 // LoadHeight loads a particular height
-func (app *GaiaApp) LoadHeight(height int64) error {
+func (app *RegenApp) LoadHeight(height int64) error {
 	return app.LoadVersion(height)
 }
 
 // ModuleAccountAddrs returns all the app's module account addresses.
-func (app *GaiaApp) ModuleAccountAddrs() map[string]bool {
+func (app *RegenApp) ModuleAccountAddrs() map[string]bool {
 	modAccAddrs := make(map[string]bool)
 	for acc := range maccPerms {
 		modAccAddrs[auth.NewModuleAddress(acc).String()] = true
@@ -392,7 +392,7 @@ func (app *GaiaApp) ModuleAccountAddrs() map[string]bool {
 }
 
 // BlacklistedAccAddrs returns all the app's module account addresses black listed for receiving tokens.
-func (app *GaiaApp) BlacklistedAccAddrs() map[string]bool {
+func (app *RegenApp) BlacklistedAccAddrs() map[string]bool {
 	blacklistedAddrs := make(map[string]bool)
 	for acc := range maccPerms {
 		blacklistedAddrs[auth.NewModuleAddress(acc).String()] = !allowedReceivingModAcc[acc]
@@ -401,16 +401,16 @@ func (app *GaiaApp) BlacklistedAccAddrs() map[string]bool {
 	return blacklistedAddrs
 }
 
-// Codec returns GaiaApp's codec.
+// Codec returns RegenApp's codec.
 //
 // NOTE: This is solely to be used for testing purposes as it may be desirable
 // for modules to register their own custom testing types.
-func (app *GaiaApp) Codec() *codec.Codec {
+func (app *RegenApp) Codec() *codec.Codec {
 	return app.cdc
 }
 
 // SimulationManager implements the SimulationApp interface
-func (app *GaiaApp) SimulationManager() *module.SimulationManager {
+func (app *RegenApp) SimulationManager() *module.SimulationManager {
 	return app.sm
 }
 

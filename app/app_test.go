@@ -14,14 +14,14 @@ import (
 	abci "github.com/tendermint/tendermint/abci/types"
 )
 
-func TestGaiadExport(t *testing.T) {
+func TestRegendExport(t *testing.T) {
 	db := db.NewMemDB()
-	gapp := NewGaiaApp(log.NewTMLogger(log.NewSyncWriter(os.Stdout)), db, nil, true, 0, map[int64]bool{}, "")
+	gapp := NewRegenApp(log.NewTMLogger(log.NewSyncWriter(os.Stdout)), db, nil, true, 0, map[int64]bool{}, "")
 	err := setGenesis(gapp)
 	require.NoError(t, err)
 
 	// Making a new app object with the db, so that initchain hasn't been called
-	newGapp := NewGaiaApp(log.NewTMLogger(log.NewSyncWriter(os.Stdout)), db, nil, true, 0, map[int64]bool{}, "")
+	newGapp := NewRegenApp(log.NewTMLogger(log.NewSyncWriter(os.Stdout)), db, nil, true, 0, map[int64]bool{}, "")
 	_, _, _, err = newGapp.ExportAppStateAndValidators(false, []string{})
 	require.NoError(t, err, "ExportAppStateAndValidators should not have an error")
 }
@@ -29,7 +29,7 @@ func TestGaiadExport(t *testing.T) {
 // ensure that black listed addresses are properly set in bank keeper
 func TestBlackListedAddrs(t *testing.T) {
 	db := db.NewMemDB()
-	app := NewGaiaApp(log.NewTMLogger(log.NewSyncWriter(os.Stdout)), db, nil, true, 0, map[int64]bool{}, "")
+	app := NewRegenApp(log.NewTMLogger(log.NewSyncWriter(os.Stdout)), db, nil, true, 0, map[int64]bool{}, "")
 
 	for acc := range maccPerms {
 		require.Equal(t, !allowedReceivingModAcc[acc], app.bankKeeper.BlacklistedAddr(app.accountKeeper.GetModuleAddress(acc)))
@@ -41,7 +41,7 @@ func TestGetMaccPerms(t *testing.T) {
 	require.Equal(t, maccPerms, dup, "duplicated module account permissions differed from actual module account permissions")
 }
 
-func setGenesis(gapp *GaiaApp) error {
+func setGenesis(gapp *RegenApp) error {
 	genesisState := simapp.NewDefaultGenesisState()
 	stateBytes, err := codec.MarshalJSONIndent(gapp.Codec(), genesisState)
 	if err != nil {

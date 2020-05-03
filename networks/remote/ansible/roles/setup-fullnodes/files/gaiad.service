@@ -1,14 +1,14 @@
 [Unit]
-Description=gaiad
+Description=xrnd
 Requires=network-online.target
 After=network-online.target
 
 [Service]
 Restart=on-failure
-User=gaiad
-Group=gaiad
+User=xrnd
+Group=xrnd
 PermissionsStartOnly=true
-ExecStart=/usr/bin/gaiad start
+ExecStart=/usr/bin/xrnd start
 ExecReload=/bin/kill -HUP $MAINPID
 KillSignal=SIGTERM
 

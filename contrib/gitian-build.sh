@@ -15,10 +15,10 @@ GO_TARBALL_URL="https://dl.google.com/go/${GO_TARBALL}"
 # Defaults
 
 DEFAULT_SIGN_COMMAND='gpg --detach-sign'
-DEFAULT_GAIA_SIGS=${GAIA_SIGS:-'gaia.sigs'}
+DEFAULT_GAIA_SIGS=${GAIA_SIGS:-'xrn.sigs'}
 DEFAULT_GITIAN_REPO='https://github.com/tendermint/gitian-builder'
 DEFAULT_GBUILD_FLAGS=''
-DEFAULT_SIGS_REPO='https://github.com/cosmos/gaia.sigs'
+DEFAULT_SIGS_REPO='https://github.com/regen-network/wasmd.sigs'
 
 # Overrides
 
@@ -94,7 +94,7 @@ f_build() {
 
   l_descriptor=$1
 
-  bin/gbuild --commit gaia="$g_commit" ${GBUILD_FLAGS} "$l_descriptor"
+  bin/gbuild --commit xrn="$g_commit" ${GBUILD_FLAGS} "$l_descriptor"
   libexec/stop-target || f_echo_stderr "warning: couldn't stop target"
 }
 

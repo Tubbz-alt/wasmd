@@ -10,7 +10,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/bank"
 
-	"github.com/cosmos/gaia/app"
+	"github.com/regen-network/wasmd/app"
 )
 
 // This will fail half the time with the second output being 173

@@ -50,7 +50,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/mint"
 	"github.com/cosmos/cosmos-sdk/x/staking"
 
-	"github.com/cosmos/gaia/app"
+	"github.com/regen-network/wasmd/app"
 )
 
 var (
@@ -84,7 +84,7 @@ func InitializeLCD(
 	logger = log.NewFilter(logger, log.AllowError())
 
 	db := dbm.NewMemDB()
-	gapp := app.NewGaiaApp(logger, db, nil, true, 0, map[int64]bool{}, "", baseapp.SetPruning(store.PruneNothing))
+	gapp := app.NewRegenApp(logger, db, nil, true, 0, map[int64]bool{}, "", baseapp.SetPruning(store.PruneNothing))
 
 	genDoc, valConsPubKeys, valOperAddrs, privVal, err := defaultGenesis(config, nValidators, initAddrs, minting)
 	if err != nil {
@@ -324,7 +324,7 @@ func defaultGenesis(config *tmcfg.Config, nValidators int, initAddrs []sdk.AccAd
 // TODO: Clean up the WAL dir or enable it to be not persistent!
 func startTM(
 	tmcfg *tmcfg.Config, logger log.Logger, genDoc *tmtypes.GenesisDoc,
-	privVal tmtypes.PrivValidator, app *app.GaiaApp,
+	privVal tmtypes.PrivValidator, app *app.RegenApp,
 ) (*nm.Node, error) {
 
 	genDocProvider := func() (*tmtypes.GenesisDoc, error) { return genDoc, nil }
@@ -370,7 +370,7 @@ func startLCD(logger log.Logger, listenAddr string, cdc *codec.Codec) (net.Liste
 	return listener, nil
 }
 
-// NOTE: If making updates here also update cmd/gaia/cmd/gaiacli/main.go
+// NOTE: If making updates here also update cmd/xrn/cmd/xrncli/main.go
 func registerRoutes(rs *lcd.RestServer) {
 	client.RegisterRoutes(rs.CliCtx, rs.Mux)
 	authrest.RegisterTxRoutes(rs.CliCtx, rs.Mux)
